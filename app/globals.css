@@ -1,26 +1,63 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Noto+Sans+KR:wght@400;600&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 @layer base {
   body {
-    background-color: #f9fafb;
-    color: #1f2937;
-    font-family: 'Noto Sans KR', 'Inter', sans-serif;
-    margin: 0;
+    @apply bg-gray-50 text-gray-800;
+    margin: 0; 
     padding: 0;
-  }
-  a {
-    @apply text-blue-500 hover:underline;
+    font-family: 'Noto Sans KR','Inter',sans-serif;
   }
 }
 
 @layer components {
-  .schedule-item {
-    @apply bg-white p-3 rounded-lg shadow-sm border border-gray-200 hover:bg-gray-50 transition duration-200;
+  .timetable-container {
+    @apply w-full max-w-6xl mx-auto bg-white shadow-md rounded-lg p-4 mt-8 relative;
+    height: 850px; /* 스크롤 없이 보일 수 있게 조금 여유 */
+    overflow: hidden; /* no scroll */
   }
-  .header-title {
-    @apply text-3xl font-bold text-gray-800 mb-6 text-center;
+  .timetable-title {
+    @apply text-2xl font-bold mb-4;
+  }
+  .days-header {
+    @apply flex border-b border-gray-200 mb-2;
+  }
+  .day-header {
+    @apply flex-1 text-center text-base font-semibold text-gray-700 py-2;
+  }
+  .time-labels {
+    @apply relative border-r border-gray-200 mr-4;
+    width: 60px;
+    height: 100%;
+  }
+  .time-line {
+    @apply absolute left-0 right-0 border-t border-gray-300 text-right pr-2 text-xs text-gray-600;
+  }
+  .days-body {
+    @apply flex-1 flex;
+    height: 100%;
+  }
+  .day-column {
+    @apply relative border-r border-gray-200;
+    min-width: 160px;
+    height: 100%;
+  }
+
+  /* 수정: 글자 튀어나옴 방지 -> multi-line or ellipsis */
+  .class-block {
+    @apply absolute rounded-md shadow-sm border border-gray-200 px-2 py-1 text-xs text-gray-800 leading-snug;
+    @apply overflow-hidden whitespace-normal break-words; /* 여러 줄로 줄바꿈 */
+    /* 또는 원하면 single line ellipsis:
+       white-space: nowrap; overflow: hidden; text-overflow: ellipsis; */
+  }
+
+  .class-block-title {
+    @apply font-bold text-sm line-clamp-2; /* 2줄까지만 */
+  }
+  .class-block-sub {
+    @apply text-[11px] mt-0.5 text-gray-700 line-clamp-2;
   }
 }

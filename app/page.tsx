@@ -1,72 +1,122 @@
-// app/page.tsx
-import { timetable } from "@/lib/timetableData";
+"use client";
 import Link from "next/link";
+import { timetable } from "@/lib/timetableData";
 
-const days = ["월", "화", "수", "목", "금"];
-const timeSlots = Array.from({ length: 30 }, (_, i) => {
-  const hour = Math.floor(i / 2) + 8;
-  const minute = i % 2 === 0 ? "00" : "30";
-  return `${String(hour).padStart(2, "0")}:${minute}`;
-});
+/** “HH:MM” → total minutes */
+function timeToMinutes(time: string) {
+  const [hh, mm] = time.split(":").map(Number);
+  return hh*60 + mm;
+}
 
-const getRowIndex = (time: string): number => {
-  const [hour, minute] = time.split(":").map(Number);
-  return (hour - 8) * 2 + (minute === 30 ? 1 : 0) + 2;
-};
+// 5 요일
+const days = ["월","화","수","목","금"];
 
-export default function Timetable() {
+export default function TimetablePage(){
+
+  // 1) timetable 전체 순회해 가장 빠른 startTime, 가장 늦은 endTime 구하기
+  let earliestMin = Infinity;
+  let latestMin   = -Infinity;
+
+  for(const cls of timetable){
+    const startM = timeToMinutes(cls.startTime);
+    const endM   = timeToMinutes(cls.endTime);
+    if(startM < earliestMin) earliestMin = startM;
+    if(endM > latestMin)     latestMin   = endM;
+  }
+
+  // 혹시 수업이 하나도 없으면 fallback
+  if(earliestMin === Infinity || latestMin === -Infinity){
+    earliestMin = 8*60;  // 08:00
+    latestMin   = 22*60; // 22:00
+  }
+
+  // 2) minHour/maxHour => 정시 단위로 라벨링
+  const minHour = Math.floor(earliestMin / 60);
+  const maxHour = Math.ceil(latestMin / 60);
+
+  // 3) 고정 높이 850px (예시)
+  //    => pxPerMin = 850 / (latestMin - earliestMin)
+  const containerHeight = 850;
+  const totalMin = latestMin - earliestMin;
+  const pxPerMin = containerHeight / totalMin;
+
   return (
-    <div className="container mx-auto p-4">
-      <h1 className="text-3xl font-bold mb-6 text-gray-800">주간 시간표</h1>
-      <div className="grid grid-cols-[auto_repeat(5,minmax(0,1fr))] grid-rows-[auto_repeat(30,minmax(40px,1fr))] gap-px bg-gray-200 rounded-lg overflow-hidden shadow-lg">
-        {/* Corner cell */}
-        <div className="row-start-1 col-start-1 bg-gray-50"></div>
+    <div className="timetable-container" /* <- height:850px, overflow:hidden in CSS */>
+      <h1 className="timetable-title">2025년 1학기</h1>
 
-        {/* Day headers */}
-        {days.map((day, index) => (
-          <div
-            key={day}
-            className={`row-start-1 col-start-${index + 2} bg-gray-50 text-center font-semibold text-gray-700 py-2`}
-          >
+      {/* 상단 요일 헤더 */}
+      <div className="days-header">
+        {/* 왼쪽 라벨 영역 자리 확보 */}
+        <div style={{ width:"60px" }}/>
+        {days.map((day) => (
+          <div key={day} className="day-header">
             {day}요일
           </div>
         ))}
+      </div>
 
-        {/* Time slots */}
-        {timeSlots.map((time, index) => (
-          <div
-            key={time}
-            className={`row-start-${index + 2} col-start-1 bg-gray-50 text-right pr-3 text-sm text-gray-600 flex items-center justify-end`}
-          >
-            {time}
-          </div>
-        ))}
+      {/* 본문: 왼쪽 시간 레이블 + 요일 columns */}
+      <div className="flex" style={{ height:"calc(100% - 50px)" }}>
+        {/* (A) 왼쪽 시간 레이블 */}
+        <div className="time-labels">
+          {
+            // minHour..maxHour
+            Array.from({ length: (maxHour - minHour + 1) }, (_, i) => {
+              const hour = minHour + i;
+              const topPx = (hour*60 - earliestMin) * pxPerMin;
+              return (
+                <div
+                  key={hour}
+                  className="time-line"
+                  style={{ top: `${topPx}px` }}
+                >
+                  {hour}시
+                </div>
+              );
+            })
+          }
+        </div>
 
-        {/* Class blocks */}
-        {timetable.map((cls) => {
-          const startRow = getRowIndex(cls.startTime);
-          const endRow = getRowIndex(cls.endTime);
-          const dayIndex = days.indexOf(cls.day);
+        {/* (B) 요일 columns */}
+        <div className="days-body">
+          {days.map(day => (
+            <div key={day} className="day-column">
+              {
+                timetable
+                  .filter(cls => cls.day === day)
+                  .map((cls) => {
+                    const sM = timeToMinutes(cls.startTime);
+                    const eM = timeToMinutes(cls.endTime);
+                    const topPx = (sM - earliestMin)*pxPerMin;
+                    const heightPx = (eM - sM)*pxPerMin;
 
-          return (
-            <Link
-              key={cls.id}
-              href={`/study-records/${encodeURIComponent(cls.subject)}`}
-              className="group relative p-2 rounded-md shadow-sm hover:shadow-md transition-shadow"
-              style={{
-                gridRow: `${startRow} / ${endRow}`,
-                gridColumn: dayIndex + 2,
-                backgroundColor: cls.color,
-              }}
-            >
-              <h3 className="text-sm font-semibold text-gray-900 group-hover:text-blue-600">
-                {cls.subject}
-              </h3>
-              <p className="text-xs text-gray-700">{cls.professor}</p>
-              <p className="text-xs text-gray-600">{cls.location}</p>
-            </Link>
-          );
-        })}
+                    return (
+                      <Link
+                        key={cls.id}
+                        href={`/study-records/${encodeURIComponent(cls.subject)}`}
+                        className={`class-block ${cls.color}`}
+                        style={{
+                          top: `${topPx}px`,
+                          height: `${heightPx}px`,
+                          left: "4px",
+                          right: "4px",
+                        }}
+                      >
+                        {/* 과목명(2줄까지), 교수/장소(2줄) */}
+                        <p className="class-block-title">{cls.subject}</p>
+                        <p className="class-block-sub">
+                          {cls.professor}<br/>{cls.location}
+                        </p>
+                        <p className="class-block-sub">
+                          {cls.startTime} ~ {cls.endTime}
+                        </p>
+                      </Link>
+                    );
+                  })
+              }
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
