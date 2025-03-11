@@ -1,7 +1,8 @@
 "use client";
 import Link from "next/link";
 import { timetable } from "@/lib/timetableData";
-import "@/app/main-page/page.css"; // 경로 확인
+import "@/app/main-page/page.css";  // 페이지 전용 CSS
+import React from "react";
 
 function timeToMinutes(time: string) {
   const [hh, mm] = time.split(":").map(Number);
@@ -17,35 +18,56 @@ export default function TimetablePage() {
 
   const earliestMin = Math.min(...timetable.map(cls => timeToMinutes(cls.startTime))) || 8 * 60;
   const latestMin = Math.max(...timetable.map(cls => timeToMinutes(cls.endTime))) || 22 * 60;
+  const minHour = Math.floor(earliestMin / 60);
+  const maxHour = Math.ceil(latestMin / 60);
   const totalMin = latestMin - earliestMin;
-  const containerHeight = 800; // 고정 높이 사용
+  // 컨테이너 높이를 조절(예: 800px로 고정 혹은 화면 비율에 따라 동적)
+  const containerHeight = 800;
   const pxPerMin = containerHeight / totalMin;
 
   return (
     <main className="timetable-main">
       <h1 className="timetable-title">2025년 1학기 시간표</h1>
       <div className="timetable">
-        <div className="days-header">
+        {/* 헤더 영역 */}
+        <div className="header">
           <div className="header-time-slot">시간</div>
           {days.map(day => (
-            <div key={day} className="day-header">{day}</div>
+            <div key={day} className="header-day">{day}요일</div>
           ))}
         </div>
-        <div className="timetable-body" style={{ height: `${containerHeight}px` }}>
-          <div className="time-slot-container">
-            {Array.from({ length: Math.ceil(latestMin / 60) - Math.floor(earliestMin / 60) + 1 }, (_, i) => {
-              const hour = Math.floor(earliestMin / 60) + i;
+
+        {/* 본문 영역: 스크롤 가능하도록 설정 */}
+        <div className="timetable-body" style={{ height: containerHeight, overflowY: "auto" }}>
+          {/* 시간 표시 컬럼 */}
+          <div className="time-slot" style={{ position: "relative", minWidth: 60 }}>
+            {Array.from({ length: maxHour - minHour + 1 }, (_, i) => {
+              const hour = minHour + i;
               const topPx = (hour * 60 - earliestMin) * pxPerMin;
               return (
-                <div key={hour} className="time-slot" style={{ top: `${topPx}px` }}>
+                <div
+                  key={hour}
+                  className="time-slot"
+                  style={{ position: "absolute", top: topPx }}
+                >
                   {hour}시
                 </div>
               );
             })}
           </div>
+
+          {/* 요일별 컬럼 */}
           <div className="days-body">
             {days.map(day => (
-              <div key={day} className="day-column" style={{ height: `${containerHeight}px` }}>
+              <div
+                key={day}
+                className="day-column"
+                style={{
+                  position: "relative",
+                  height: containerHeight,
+                  minWidth: 180,
+                }}
+              >
                 {timetable
                   .filter(cls => cls.day === day)
                   .map(cls => {
@@ -53,24 +75,26 @@ export default function TimetablePage() {
                     const eM = timeToMinutes(cls.endTime);
                     const topPx = (sM - earliestMin) * pxPerMin;
                     const heightPx = (eM - sM) * pxPerMin;
+
                     return (
                       <Link
                         key={cls.id || cls.subject}
                         href={`/subject/${encodeURIComponent(cls.subject)}`}
-                        className={`class-block event-${cls.color}`}
+                        className={`event event-${cls.color}`}
                         style={{
-                          top: `${topPx}px`,
-                          height: `${heightPx}px`,
-                          width: "calc(100% - 12px)",
-                          left: "6px"
+                          position: "absolute",
+                          top: topPx,
+                          height: heightPx,
+                          left: 4,
+                          width: "calc(100% - 8px)",
                         }}
                       >
-                        <div className="event-content">
-                          <p className="class-block-title">{cls.subject}</p>
-                          <p className="class-block-sub">{cls.professor}</p>
-                          <p className="class-block-sub">{cls.location}</p>
-                          <p className="class-block-sub">{cls.startTime} ~ {cls.endTime}</p>
-                        </div>
+                        <p className="class-block-title">{cls.subject}</p>
+                        <p className="class-block-sub">{cls.professor}</p>
+                        <p className="class-block-sub">{cls.location}</p>
+                        <p className="class-block-sub">
+                          {cls.startTime} ~ {cls.endTime}
+                        </p>
                       </Link>
                     );
                   })}

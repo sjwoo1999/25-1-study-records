@@ -1,63 +1,229 @@
+/* globals.css */
+
+/* 전체 레이아웃 스타일 */
 .timetable-container {
   position: relative;
   width: 100%;
+  max-width: 1600px; /* PC 화면 83% 활용 */
+  margin: 0 auto;
+  box-sizing: border-box;
 }
 
+/* 상단 헤더 스타일 */
 .days-header {
   display: flex;
   justify-content: space-between;
-  padding: 10px 0;
-  border-bottom: 1px solid #e5e7eb;
+  padding: 20px 0;
+  border-bottom: 3px solid #1e40af;
+  background-color: #f1f5f9;
 }
 
 .day-header {
   flex: 1;
   text-align: center;
   font-weight: 600;
+  font-size: 18px;
+  color: #1e40af;
+  transition: all 0.3s ease;
 }
 
+.day-header:hover {
+  background-color: #e2e8f0;
+  transform: translateY(-2px);
+}
+
+/* 시간대 레이블 */
 .time-labels {
   position: relative;
-  width: 60px;
+  width: 80px;
+  min-width: 80px;
   border-right: 1px solid #e5e7eb;
+  background-color: #ffffff;
 }
 
 .time-line {
   position: absolute;
   width: 100%;
   text-align: right;
-  padding-right: 5px;
+  padding-right: 8px;
+  font-size: 16px;
+  color: #4b5563;
+  transition: all 0.3s ease;
 }
 
-.days-body {
+.time-line:hover {
+  color: #1e40af;
+  font-weight: 600;
+}
+
+/* 시간표 본문 */
+.timetable-body {
   display: flex;
-  flex: 1;
+  position: relative;
+  overflow-y: auto;
+  min-height: 800px;
+  max-height: 900px;
 }
 
+/* 요일별 열 컨테이너 */
+.days-body {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(240px, 300px));
+  flex: 1;
+  gap: 24px;
+}
+
+/* 요일별 열 */
 .day-column {
   flex: 1;
   position: relative;
+  height: 100%;
+  min-height: 800px;
   border-left: 1px solid #e5e7eb;
+  overflow: visible;
+  transition: all 0.3s ease;
 }
 
+.day-column:hover {
+  background-color: rgba(29, 78, 216, 0.05);
+}
+
+/* 강의 블록 */
 .class-block {
   position: absolute;
-  padding: 4px;
-  border-radius: 4px;
+  padding: 12px;
+  border-radius: 8px;
   overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  min-height: 80px;
+  display: block;
+  opacity: 1;
 }
 
+.class-block:hover {
+  transform: scale(1.03);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  background-color: #bfdbfe;
+}
+
+/* 강의 블록 색상 */
+.class-block.event-blue {
+  background-color: #dbeafe;
+}
+
+.class-block.event-green {
+  background-color: #d1fae5;
+}
+
+.class-block.event-yellow {
+  background-color: #fefcbf;
+}
+
+.class-block.event-pink {
+  background-color: #fce7f3;
+}
+
+.class-block.event-purple {
+  background-color: #e9d5ff;
+}
+
+.class-block.event-orange {
+  background-color: #ffedd5;
+}
+
+.class-block.event-red {
+  background-color: #fee2e2;
+}
+
+/* 강의 블록 콘텐츠 */
+.event-content {
+  overflow-wrap: break-word;
+}
+
+/* 강의 제목 */
 .class-block-title {
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
-  margin: 0;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  margin-bottom: 6px;
+  color: #1e40af;
+  overflow-wrap: break-word;
 }
 
+/* 강의 세부 정보 */
 .class-block-sub {
-  font-size: 12px;
-  margin: 2px 0 0;
-  color: #6b7280;
+  font-size: 14px;
+  color: #4b5563;
+  margin: 2px 0;
+  overflow-wrap: break-word;
+  line-height: 1.5;
+}
+
+/* PC 반응형 스타일 (1024px 이상) */
+@media (min-width: 1024px) {
+  .timetable-container {
+    padding: 40px 30px;
+  }
+  .days-header {
+    padding: 22px 0;
+  }
+  .day-header {
+    font-size: 20px;
+  }
+  .time-labels {
+    width: 100px;
+    min-width: 100px;
+  }
+  .time-line {
+    font-size: 18px;
+  }
+  .class-block {
+    padding: 14px;
+    min-height: 90px;
+  }
+  .class-block-title {
+    font-size: 18px;
+  }
+  .class-block-sub {
+    font-size: 15px;
+  }
+}
+
+/* 모바일 반응형 스타일 (768px 이하) */
+@media (max-width: 768px) {
+  .timetable-container {
+    padding: 20px 10px;
+  }
+  .days-header {
+    padding: 10px 0;
+  }
+  .day-header {
+    font-size: 14px;
+  }
+  .time-labels {
+    width: 60px;
+    min-width: 60px;
+  }
+  .time-line {
+    font-size: 12px;
+  }
+  .days-body {
+    grid-template-columns: repeat(5, minmax(120px, 1fr));
+    gap: 12px;
+  }
+  .day-column {
+    min-width: 120px;
+    max-width: 150px;
+  }
+  .class-block {
+    padding: 8px;
+    min-height: 60px;
+  }
+  .class-block-title {
+    font-size: 12px;
+  }
+  .class-block-sub {
+    font-size: 10px;
+  }
 }
