@@ -1,233 +1,98 @@
-/* 전체 레이아웃 스타일 */
 .timetable-main {
-    min-height: 100vh;
-    padding: 40px 30px;
-    background-color: #f7fafc;
-    width: 100%;
-    max-width: 1200px; /* 1600px → 1200px로 축소 */
+    padding: 20px;
+    max-width: 1200px;
     margin: 0 auto;
-    box-sizing: border-box;
-    font-family: 'Noto Sans KR', sans-serif; /* 가독성 높은 폰트 */
-}
-
-/* 제목 스타일 */
-.timetable-title {
-    font-size: 32px; /* 40px → 32px로 축소 */
-    font-weight: 700;
+  }
+  
+  .timetable-title {
     text-align: center;
-    margin-bottom: 48px;
-    color: #1e40af;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-/* 시간표 그리드 컨테이너 */
-.timetable {
-    display: grid;
-    grid-template-columns: minmax(60px, 80px) repeat(5, minmax(180px, 240px)); /* 열 너비 축소 */
-    gap: 16px; /* 24px → 16px로 축소 */
-    background-color: #e2e8f0;
-    border-radius: 16px;
-    position: relative;
-    overflow: hidden;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
-    border: 1px solid #d1d5db;
-}
-
-/* 시간표 셀 기본 스타일 */
-.timetable div {
-    padding: 16px; /* 20px → 16px로 축소 */
-    background-color: #ffffff;
-    border: 1px solid #e5e7eb;
+    font-size: 2rem;
+    margin-bottom: 20px;
+  }
+  
+  .timetable {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid #ddd;
+  }
+  
+  .days-header {
+    display: flex;
+    background-color: #f5f5f5;
+  }
+  
+  .header-time-slot,
+  .day-header {
+    flex: 1;
     text-align: center;
-    box-sizing: border-box;
-    transition: all 0.3s ease;
-}
-
-/* 셀 호버 효과 */
-.timetable div:hover {
-    background-color: #f1f5f9;
-    transform: translateY(-2px);
-}
-
-/* 시간표 헤더 */
-.days-header {
-    display: contents;
-}
-
-.header-time-slot {
-    font-size: 14px; /* 16px → 14px */
-    color: #4b5563;
-    font-weight: 500;
-    background-color: #f1f5f9;
-    border-bottom: 3px solid #1e40af;
-}
-
-.day-header {
-    font-size: 16px; /* 18px → 16px */
-    color: #1e40af;
-    font-weight: 600;
-    background-color: #f1f5f9;
-    border-bottom: 3px solid #1e40af;
-}
-
-/* 시간표 본문 */
-.timetable-body {
-    display: grid;
-    grid-template-columns: minmax(60px, 80px) repeat(5, minmax(180px, 240px));
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .timetable-body {
     position: relative;
+    height: 800px;
     overflow-y: auto;
-    min-height: 600px; /* 800px → 600px로 축소 */
-    max-height: 700px; /* 900px → 700px로 축소 */
-    background: repeating-linear-gradient(to bottom, #e5e7eb, #e5e7eb 1px, transparent 1px, transparent 50px); /* 그리드 선 추가 */
-}
-
-/* 시간대 컨테이너 */
-.time-slot-container {
-    position: relative;
-    min-width: 60px;
-}
-
-/* 시간대 표시 */
-.time-slot {
-    font-size: 14px; /* 16px → 14px */
-    color: #4b5563;
+  }
+  
+  .time-slot-container {
+    position: absolute;
+    width: 100px;
+  }
+  
+  .time-slot {
     position: absolute;
     width: 100%;
-    text-align: right;
-    padding-right: 8px;
-    background-color: #f1f5f9; /* 시간대 강조 */
-    border-bottom: 1px solid #d1d5db; /* 구분선 추가 */
-}
-
-/* 요일별 열 컨테이너 */
-.days-body {
-    display: grid;
-    grid-template-columns: repeat(5, minmax(180px, 240px));
-}
-
-/* 요일별 열 */
-.day-column {
+    text-align: center;
+    border-bottom: 1px dashed #eee;
+    height: 1px;
+    line-height: 20px;
+    transform: translateY(-10px);
+  }
+  
+  .days-body {
+    display: flex;
+    margin-left: 100px;
+  }
+  
+  .day-column {
+    flex: 1;
     position: relative;
-    min-width: 180px;
-    max-width: 240px;
     height: 100%;
-}
-
-/* 강의 블록 */
-.class-block {
+    min-height: 800px;
+    border-right: 1px solid #ddd;
+  }
+  
+  .class-block {
     position: absolute !important;
     display: block !important;
     z-index: 10 !important;
-    /* background-color: red !important; */ /* 디버깅 완료 후 제거 */
-}
-
-/* 강의 블록 호버 효과 */
-.class-block:hover {
-    transform: scale(1.03);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-    background-color: #bfdbfe;
-}
-
-/* 강의 블록 색상 */
-.event-blue {
-    background-color: rgba(219, 234, 254, 0.8); /* 반투명 */
-}
-
-.event-green {
-    background-color: rgba(209, 250, 229, 0.8);
-}
-
-.event-yellow {
-    background-color: rgba(254, 252, 191, 0.8);
-}
-
-.event-pink {
-    background-color: rgba(252, 231, 243, 0.8);
-}
-
-.event-purple {
-    background-color: rgba(233, 213, 255, 0.8);
-}
-
-.event-orange {
-    background-color: rgba(255, 237, 213, 0.8);
-}
-
-.event-red {
-    background-color: rgba(254, 226, 226, 0.8);
-}
-
-/* 강의 블록 콘텐츠 */
-.event-content {
-    overflow-wrap: break-word;
-}
-
-/* 강의 제목 */
-.class-block-title {
-    font-size: 16px; /* 18px → 16px */
-    font-weight: 600;
+    padding: 8px;
+    color: white;
+    border-radius: 4px;
+    text-decoration: none;
+  }
+  
+  .event-blue {
+    background-color: rgba(0, 128, 255, 0.8);
+  }
+  
+  .event-red {
+    background-color: rgba(255, 0, 0, 0.8);
+  }
+  
+  .class-block-title {
+    font-weight: bold;
     margin-bottom: 4px;
-    color: #1e40af;
-}
-
-/* 강의 세부 정보 */
-.class-block-sub {
-    font-size: 14px; /* 15px → 14px */
-    color: #333333; /* 대비 강화 */
+  }
+  
+  .class-block-sub {
+    font-size: 0.9rem;
     margin: 2px 0;
-    overflow-wrap: break-word;
-    line-height: 1.5;
-}
-
-/* PC 반응형 스타일 (1024px 이상) */
-@media (min-width: 1024px) {
-    .timetable {
-        grid-template-columns: minmax(80px, 100px) repeat(5, minmax(200px, 240px));
-    }
-    .timetable-main {
-        padding: 40px 30px;
-    }
-    .class-block {
-        padding: 10px;
-    }
-    .header-time-slot {
-        font-size: 16px;
-    }
-    .day-header {
-        font-size: 18px;
-    }
-    .class-block-title {
-        font-size: 16px;
-    }
-    .class-block-sub {
-        font-size: 14px;
-    }
-    .time-slot {
-        font-size: 16px;
-    }
-}
-
-/* 모바일 반응형 스타일 (768px 이하) */
-@media (max-width: 768px) {
-    .timetable {
-        grid-template-columns: minmax(60px, 80px) repeat(5, minmax(120px, 1fr));
-        gap: 12px;
-        overflow-x: auto;
-    }
-    .timetable-main {
-        padding: 20px 10px;
-    }
-    .class-block {
-        font-size: 12px;
-        padding: 8px;
-    }
-    .class-block-title {
-        font-size: 14px;
-    }
-    .class-block-sub {
-        font-size: 12px;
-    }
-    .time-slot {
-        font-size: 12px;
-    }
-}
+  }
+  
+  .error-message {
+    text-align: center;
+    color: red;
+    padding: 20px;
+  }
