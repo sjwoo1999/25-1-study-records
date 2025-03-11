@@ -1,6 +1,7 @@
 import { timetable } from "@/lib/timetableData";
 
-export default function SubjectPage({ params }: { params: { subject: string } }) {
+export default async function SubjectPage(props: { params: Promise<{ subject: string }> }) {
+  const params = await props.params;
   const subjectClasses = timetable.filter(cls => cls.subject === params.subject);
 
   if (subjectClasses.length === 0) {
