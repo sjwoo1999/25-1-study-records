@@ -1,18 +1,7 @@
-/* components/TimeTable.css */
-
-/* 전체 페이지 기본 스타일 */
-body {
-    margin: 0;
-    padding: 0;
-    background-color: #f0f2f5;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  }
-  
-  /* 시간표 래퍼 (6열: 1열=시간, 5열=요일) */
-  .timetable {
+/* page.css */
+.timetable {
     display: grid;
     grid-template-columns: 100px repeat(5, 1fr);
-    /* row=1: 헤더(50px), row=2..51: 50칸(15분 단위, each 30px) */
     grid-template-rows: 50px repeat(50, 30px);
     gap: 2px;
     max-width: 1200px;
@@ -24,7 +13,6 @@ body {
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
   }
   
-  /* 헤더 (시간 / 요일) => row=1 */
   .header {
     background-color: #34495e;
     color: #fff;
@@ -37,7 +25,6 @@ body {
     text-transform: uppercase;
   }
   
-  /* 왼쪽 정시 라벨 (09:00, 10:00, ...) => gridColumn=1, row=2..51 */
   .time-slot {
     background-color: #ecf0f1;
     font-size: 12px;
@@ -49,7 +36,6 @@ body {
     font-weight: 500;
   }
   
-  /* 수업 블록 (Grid 배치) => .timetable-class-block */
   .timetable-class-block {
     background-color: #fff;
     padding: 6px 8px;
@@ -58,11 +44,11 @@ body {
     line-height: 1.5;
     margin: 2px;
     border: 1px solid #ccc;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
     overflow: hidden;
     cursor: pointer;
     transition: transform 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
-    position: relative; /* ensure row/col spanning in grid */
+    position: relative;
   }
   .timetable-class-block .subject {
     font-weight: bold;
@@ -72,7 +58,6 @@ body {
     text-overflow: ellipsis;
   }
   
-  /* 색상 클래스 */
   .timetable-class-block.green { background-color: #2ecc71; color: #fff; }
   .timetable-class-block.blue { background-color: #3498db; color: #fff; }
   .timetable-class-block.yellow { background-color: #f1c40f; color: #2c3e50; }
@@ -84,10 +69,9 @@ body {
   
   .timetable-class-block:hover {
     transform: scale(1.03);
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
   }
   
-  /* 15분 간격 라인 */
   .row-line {
     border-top: 1px solid #d5d8dc;
   }
@@ -95,7 +79,7 @@ body {
     border-top: 2px solid #95a5a6;
   }
   
-  /* 반응형 (모바일) => 원치 않으면 제거 */
+  /* 모바일 반응형 */
   @media (max-width: 768px) {
     .timetable {
       grid-template-columns: 60px repeat(5, 1fr);

@@ -1,10 +1,10 @@
-/* globals.css */
+/* app/globals.css */
 
 /* 전체 레이아웃 스타일 */
 .timetable-container {
   position: relative;
   width: 100%;
-  max-width: 1600px; /* PC 화면 83% 활용 */
+  max-width: 1600px;
   margin: 0 auto;
   box-sizing: border-box;
 }
@@ -26,7 +26,6 @@
   color: #1e40af;
   transition: all 0.3s ease;
 }
-
 .day-header:hover {
   background-color: #e2e8f0;
   transform: translateY(-2px);
@@ -40,7 +39,6 @@
   border-right: 1px solid #e5e7eb;
   background-color: #ffffff;
 }
-
 .time-line {
   position: absolute;
   width: 100%;
@@ -50,7 +48,6 @@
   color: #4b5563;
   transition: all 0.3s ease;
 }
-
 .time-line:hover {
   color: #1e40af;
   font-weight: 600;
@@ -83,12 +80,11 @@
   overflow: visible;
   transition: all 0.3s ease;
 }
-
 .day-column:hover {
   background-color: rgba(29, 78, 216, 0.05);
 }
 
-/* 강의 블록 */
+/* ---- (LEGACY) .class-block: absolute 배치 => 주석 처리 ----
 .class-block {
   position: absolute;
   padding: 12px;
@@ -101,48 +97,21 @@
   display: block;
   opacity: 1;
 }
-
 .class-block:hover {
   transform: scale(1.03);
   box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
   background-color: #bfdbfe;
 }
-
-/* 강의 블록 색상 */
-.class-block.event-blue {
-  background-color: #dbeafe;
-}
-
-.class-block.event-green {
-  background-color: #d1fae5;
-}
-
-.class-block.event-yellow {
-  background-color: #fefcbf;
-}
-
-.class-block.event-pink {
-  background-color: #fce7f3;
-}
-
-.class-block.event-purple {
-  background-color: #e9d5ff;
-}
-
-.class-block.event-orange {
-  background-color: #ffedd5;
-}
-
-.class-block.event-red {
-  background-color: #fee2e2;
-}
-
-/* 강의 블록 콘텐츠 */
+.class-block.event-blue { background-color: #dbeafe; }
+.class-block.event-green { background-color: #d1fae5; }
+.class-block.event-yellow { background-color: #fefcbf; }
+.class-block.event-pink { background-color: #fce7f3; }
+.class-block.event-purple { background-color: #e9d5ff; }
+.class-block.event-orange { background-color: #ffedd5; }
+.class-block.event-red { background-color: #fee2e2; }
 .event-content {
   overflow-wrap: break-word;
 }
-
-/* 강의 제목 */
 .class-block-title {
   font-size: 16px;
   font-weight: 600;
@@ -150,8 +119,6 @@
   color: #1e40af;
   overflow-wrap: break-word;
 }
-
-/* 강의 세부 정보 */
 .class-block-sub {
   font-size: 14px;
   color: #4b5563;
@@ -159,6 +126,8 @@
   overflow-wrap: break-word;
   line-height: 1.5;
 }
+---- END LEGACY ---- */
+
 
 /* PC 반응형 스타일 (1024px 이상) */
 @media (min-width: 1024px) {
@@ -178,19 +147,9 @@
   .time-line {
     font-size: 18px;
   }
-  .class-block {
-    padding: 14px;
-    min-height: 90px;
-  }
-  .class-block-title {
-    font-size: 18px;
-  }
-  .class-block-sub {
-    font-size: 15px;
-  }
 }
 
-/* 모바일 반응형 스타일 (768px 이하) */
+/* 모바일 반응형 (768px 이하) */
 @media (max-width: 768px) {
   .timetable-container {
     padding: 20px 10px;
@@ -215,15 +174,5 @@
   .day-column {
     min-width: 120px;
     max-width: 150px;
-  }
-  .class-block {
-    padding: 8px;
-    min-height: 60px;
-  }
-  .class-block-title {
-    font-size: 12px;
-  }
-  .class-block-sub {
-    font-size: 10px;
   }
 }
