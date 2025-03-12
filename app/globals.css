@@ -1,15 +1,22 @@
 /* app/globals.css */
 
-/* 전체 레이아웃 스타일 */
+/* 1) 전역 스타일 (Reset 등) */
+html, body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* 2) 글로벌 레이아웃 (예시) */
 .timetable-container {
   position: relative;
   width: 100%;
-  max-width: 1600px;
   margin: 0 auto;
   box-sizing: border-box;
 }
 
-/* 상단 헤더 스타일 */
+/* 상단 헤더 (예시) */
 .days-header {
   display: flex;
   justify-content: space-between;
@@ -31,7 +38,7 @@
   transform: translateY(-2px);
 }
 
-/* 시간대 레이블 */
+/* (예시) 시간 레이블, time-line 등 */
 .time-labels {
   position: relative;
   width: 80px;
@@ -53,7 +60,7 @@
   font-weight: 600;
 }
 
-/* 시간표 본문 */
+/* (예시) 시간표 본문 */
 .timetable-body {
   display: flex;
   position: relative;
@@ -62,15 +69,13 @@
   max-height: 900px;
 }
 
-/* 요일별 열 컨테이너 */
+/* (예시) 요일별 열 */
 .days-body {
   display: grid;
-  grid-template-columns: repeat(5, minmax(240px, 300px));
+  grid-template-columns: repeat(5, 1fr);
   flex: 1;
   gap: 24px;
 }
-
-/* 요일별 열 */
 .day-column {
   flex: 1;
   position: relative;
@@ -84,52 +89,14 @@
   background-color: rgba(29, 78, 216, 0.05);
 }
 
-/* ---- (LEGACY) .class-block: absolute 배치 => 주석 처리 ----
+/* ---- (LEGACY) .class-block => 주석 처리 ----
 .class-block {
   position: absolute;
-  padding: 12px;
-  border-radius: 8px;
-  overflow: hidden;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  transition: all 0.3s ease;
-  cursor: pointer;
-  min-height: 80px;
-  display: block;
-  opacity: 1;
-}
-.class-block:hover {
-  transform: scale(1.03);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-  background-color: #bfdbfe;
-}
-.class-block.event-blue { background-color: #dbeafe; }
-.class-block.event-green { background-color: #d1fae5; }
-.class-block.event-yellow { background-color: #fefcbf; }
-.class-block.event-pink { background-color: #fce7f3; }
-.class-block.event-purple { background-color: #e9d5ff; }
-.class-block.event-orange { background-color: #ffedd5; }
-.class-block.event-red { background-color: #fee2e2; }
-.event-content {
-  overflow-wrap: break-word;
-}
-.class-block-title {
-  font-size: 16px;
-  font-weight: 600;
-  margin-bottom: 6px;
-  color: #1e40af;
-  overflow-wrap: break-word;
-}
-.class-block-sub {
-  font-size: 14px;
-  color: #4b5563;
-  margin: 2px 0;
-  overflow-wrap: break-word;
-  line-height: 1.5;
+  ...
 }
 ---- END LEGACY ---- */
 
-
-/* PC 반응형 스타일 (1024px 이상) */
+/* 반응형 (예시) */
 @media (min-width: 1024px) {
   .timetable-container {
     padding: 40px 30px;
@@ -149,7 +116,6 @@
   }
 }
 
-/* 모바일 반응형 (768px 이하) */
 @media (max-width: 768px) {
   .timetable-container {
     padding: 20px 10px;
@@ -176,3 +142,5 @@
     max-width: 150px;
   }
 }
+
+/* !!! NO .timetable HERE !!! */
